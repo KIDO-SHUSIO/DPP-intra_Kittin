@@ -8,3 +8,5 @@ if len(params) > 0:
         print(f"{param}: {len(param)}")
 else:
     print("none")
+
+    # python cell05/ex11/count_it.py "Game" "of" "Thrones"
