@@ -22,15 +22,34 @@ def checkmate(board, visualize=False):
         king_pos = None
         king_count = 0
 
-        # ตรวจสอบขนาดกระดานและหาคิง
+        # กำหนดตัวหมากที่อนุญาต
+        allowed_pieces = {'P', 'B', 'R', 'Q', 'K'}
+        processed_lines = []
+
+        # ตรวจสอบขนาดกระดาน หาคิง และแปลงตัวอื่นให้เป็น '.'
         for r in range(size):
             if len(lines[r]) != size:
                 print("Error")
                 return
+            
+            new_row = ""
             for c in range(size):
-                if lines[r][c] == 'K':
+                char = lines[r][c]
+                # ถ้าตัวอักษรไม่อยู่ใน allowed_pieces ให้แทนที่ด้วย '.'
+                if char not in allowed_pieces:
+                    new_row += '.'
+                else:
+                    new_row += char
+                
+                # เช็คหา King จากตัวที่ถูกกรองแล้ว
+                if new_row[c] == 'K':
                     king_count += 1
                     king_pos = (r, c)
+            
+            processed_lines.append(new_row)
+            
+        # อัปเดตกระดานให้เป็นค่าที่กรองแล้ว
+        lines = processed_lines
         
         if king_count != 1:
             print("Error")

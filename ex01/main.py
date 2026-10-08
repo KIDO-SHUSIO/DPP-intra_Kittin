@@ -29,3 +29,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+    
+#  python ex01\main.py -v ex01\valid_board.chess
