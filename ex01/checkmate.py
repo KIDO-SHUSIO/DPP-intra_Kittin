@@ -10,7 +10,7 @@ def checkmate(board, visualize=False):
             print("Error")
             return
             
-        # ลบ \r ออกเพื่อป้องกันบั๊กจากไฟล์บน Windows
+        
         lines = board.replace('\r', '').strip('\n').split('\n')
         lines = [line for line in lines if line] # กรองบรรทัดว่างออก
         
@@ -35,20 +35,18 @@ def checkmate(board, visualize=False):
             new_row = ""
             for c in range(size):
                 char = lines[r][c]
-                # ถ้าตัวอักษรไม่อยู่ใน allowed_pieces ให้แทนที่ด้วย '.'
+                
                 if char not in allowed_pieces:
                     new_row += '.'
                 else:
                     new_row += char
                 
-                # เช็คหา King จากตัวที่ถูกกรองแล้ว
                 if new_row[c] == 'K':
                     king_count += 1
                     king_pos = (r, c)
             
             processed_lines.append(new_row)
             
-        # อัปเดตกระดานให้เป็นค่าที่กรองแล้ว
         lines = processed_lines
         
         if king_count != 1:
@@ -59,7 +57,6 @@ def checkmate(board, visualize=False):
         pieces = {'P', 'B', 'R', 'Q', 'K'}
         attacker_info = None
 
-        # 1. เช็ค Rook (R) และ Queen (Q) ในแนวตรง
         rook_dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         for dr, dc in rook_dirs:
             r, c = kr + dr, kc + dc
@@ -74,7 +71,6 @@ def checkmate(board, visualize=False):
             if attacker_info:
                 break
 
-        # 2. เช็ค Bishop (B) และ Queen (Q) ในแนวทแยง
         if not attacker_info:
             bishop_dirs = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
             for dr, dc in bishop_dirs:
@@ -90,7 +86,6 @@ def checkmate(board, visualize=False):
                 if attacker_info:
                     break
 
-        # 3. เช็ค Pawn (P)
         if not attacker_info:
             pawn_positions = [(kr + 1, kc - 1), (kr + 1, kc + 1)]
             for pr, pc in pawn_positions:
@@ -99,7 +94,6 @@ def checkmate(board, visualize=False):
                         attacker_info = ('P', pr, pc)
                         break
 
-        # --- แสดงผลลัพธ์ Visualization ---
         if visualize:
             print(f"\n--- Board Analysis ({size}x{size}) ---")
             header = "    " + " ".join([f"{c}" for c in range(size)])
@@ -130,7 +124,6 @@ def checkmate(board, visualize=False):
                 print(f"Status: SAFE (No Check)")
             print("---------------------------\n")
 
-        # ปรินท์ผลลัพธ์ตามโจทย์หลัก
         if attacker_info:
             print("Success")
         else:
