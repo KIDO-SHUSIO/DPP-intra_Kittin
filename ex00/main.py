@@ -2,10 +2,12 @@ from checkmate import checkmate
 
 def main():
     board = """\
-R...
-.K..
-..P.
-...."""
+.....
+.....
+.....
+..K..
+....P
+....Q"""
     checkmate(board)
 
 if __name__ == "__main__":

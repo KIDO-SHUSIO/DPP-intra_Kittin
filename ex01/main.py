@@ -9,10 +9,12 @@ def main():
     visualize_mode = False
     args = sys.argv[1:]
 
+    # ตรวจสอบ Flag สำหรับเปิดโหมด Visualization
     if "-v" in args or "--visualize" in args:
         visualize_mode = True
         args = [arg for arg in args if arg not in ("-v", "--visualize")]
 
+    # ประมวลผลไฟล์ที่ถูกส่งเข้ามา
     for file_path in args:
         if not os.path.isfile(file_path):
             print("Error")

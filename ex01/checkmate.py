@@ -6,7 +6,14 @@ COLOR_GRID = "\033[90m"          # สีเทาสำหรับเส้น
 
 def checkmate(board, visualize=False):
     try:
-        lines = board.strip().splitlines()
+        if not board or not isinstance(board, str):
+            print("Error")
+            return
+            
+        # ลบ \r ออกเพื่อป้องกันบั๊กจากไฟล์บน Windows
+        lines = board.replace('\r', '').strip('\n').split('\n')
+        lines = [line for line in lines if line] # กรองบรรทัดว่างออก
+        
         if not lines:
             print("Error")
             return
@@ -15,6 +22,7 @@ def checkmate(board, visualize=False):
         king_pos = None
         king_count = 0
 
+        # ตรวจสอบขนาดกระดานและหาคิง
         for r in range(size):
             if len(lines[r]) != size:
                 print("Error")
@@ -32,7 +40,7 @@ def checkmate(board, visualize=False):
         pieces = {'P', 'B', 'R', 'Q', 'K'}
         attacker_info = None
 
-        # 1. เช็ค Rook (R) และ Queen (Q)
+        # 1. เช็ค Rook (R) และ Queen (Q) ในแนวตรง
         rook_dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         for dr, dc in rook_dirs:
             r, c = kr + dr, kc + dc
@@ -47,6 +55,7 @@ def checkmate(board, visualize=False):
             if attacker_info:
                 break
 
+        # 2. เช็ค Bishop (B) และ Queen (Q) ในแนวทแยง
         if not attacker_info:
             bishop_dirs = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
             for dr, dc in bishop_dirs:
@@ -71,12 +80,12 @@ def checkmate(board, visualize=False):
                         attacker_info = ('P', pr, pc)
                         break
 
-        # --- แสดงผลลัพธ์ ---
+        # --- แสดงผลลัพธ์ Visualization ---
         if visualize:
             print(f"\n--- Board Analysis ({size}x{size}) ---")
             header = "    " + " ".join([f"{c}" for c in range(size)])
             print(f"{COLOR_GRID}{header}{COLOR_RESET}")
-            print(f"{COLOR_GRID}   +" + "--" * size + f"+{COLOR_RESET}")
+            print(f"{COLOR_GRID}  +" + "--" * size + f"+{COLOR_RESET}")
 
             for r in range(size):
                 row_str = f"{COLOR_GRID}{r} |{COLOR_RESET} "
@@ -91,7 +100,7 @@ def checkmate(board, visualize=False):
                 row_str += f"{COLOR_GRID}|{COLOR_RESET}"
                 print(row_str)
 
-            print(f"{COLOR_GRID}   +" + "--" * size + f"+{COLOR_RESET}")
+            print(f"{COLOR_GRID}  +" + "--" * size + f"+{COLOR_RESET}")
 
             if attacker_info:
                 piece_names = {'P': 'Pawn', 'B': 'Bishop', 'R': 'Rook', 'Q': 'Queen'}
@@ -102,6 +111,7 @@ def checkmate(board, visualize=False):
                 print(f"Status: SAFE (No Check)")
             print("---------------------------\n")
 
+        # ปรินท์ผลลัพธ์ตามโจทย์หลัก
         if attacker_info:
             print("Success")
         else:

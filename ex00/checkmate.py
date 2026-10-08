@@ -25,6 +25,8 @@ def checkmate(board):
 
     kr, kc = king_pos
 
+    pieces = {'P', 'B', 'R', 'Q', 'K'}
+
 #--------------------------------------------------------------------------------
 
     pawn_attackers = [(kr + 1, kc - 1), (kr + 1, kc + 1)]
@@ -41,11 +43,13 @@ def checkmate(board):
         r, c = kr + dr, kc + dc
         while 0 <= r < size and 0 <= c < size:
             piece = lines[r][c]
-            if piece != '.':
+            
+            if piece in pieces:
                 if piece in ('B', 'Q'):
                     print("Success")
                     return
                 break  
+                
             r += dr
             c += dc
 
@@ -56,11 +60,13 @@ def checkmate(board):
         r, c = kr + dr, kc + dc
         while 0 <= r < size and 0 <= c < size:
             piece = lines[r][c]
-            if piece != '.':
+            
+            if piece in pieces:
                 if piece in ('R', 'Q'):
                     print("Success")
                     return
                 break  
+                
             r += dr
             c += dc
 
